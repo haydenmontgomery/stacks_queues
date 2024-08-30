@@ -1,0 +1,102 @@
+Browser Back/Forward
+When browsing, each website gets put into the back stack.
+The two stacks would work as such:
+If I hit back, it takes the top of the back stack and puts it on the top of the forward stack
+if I hit forward, it takes the top of the forward stack and puts it on the top of the back stack.
+
+String Reversal
+function stringReversal(str) {
+
+    const stack = new Stack();
+    let reversed = "";
+
+    for (let i = 0; i < str.length; i++){
+        stack.push(str[i]);
+    }
+
+    while (!stack.isEmpty()) {
+        reversed += stack.pop();
+    }
+    return reversed;
+}
+
+Balanced Brackets
+function isBalanced(s) {
+    // Write your code here
+    let stack = [];
+    const openingSymbols = ['(', '[', '{'];
+    const closingSymbols = [')', ']', '}'];
+    
+    for (let i = 0; i < s.length; i++) {
+        if (openingSymbols.includes(s[i])) {
+            stack.push(s[i]);
+        } else if (closingSymbols.includes(s[i])) {
+            if (stack.length === 0) {
+                return "NO";
+            }
+            
+            let lastOpeningSymbol = stack.pop();
+            let expectedOpeningSymbol = openingSymbols[closingSymbols.indexOf(s[i])];
+            
+            if (lastOpeningSymbol !== expectedOpeningSymbol) {
+                return "NO";
+            }
+        }
+    }
+    return stack.length === 0 ? "YES" : "NO";
+}
+
+Josephus Survivor
+
+function survivor(vals, skip){
+    // make array
+    let arr = []
+    for (let i = 1; i <= vals; i++){
+        arr.push(i);
+    }
+    const linkedList = new LinkedList(arr);
+    let current = 1;
+    while (linkedList.length >= 1) {
+        current += skip;
+        linkedList.removeAt(current);
+    }
+    return linkdList.getAt(0);
+}
+
+Polish Notation
+function calc(expression) {
+    const stack = new Stack();
+    const tokens = expression.split(' ').reverse();
+
+    tokens.forEach(token => {
+        if (!isNaN(token)) {
+            stack.push(parseFloat(token));
+        } else {
+            const operand1 = stack.pop();
+            const operand2 = stack.pop();
+
+            switch (token) {
+                case '+':
+                    stack.push(operand1 + operand2);
+                    break;
+                case '-':
+                    stack.push(operand1 - operand2);
+                    break;
+                case '*':
+                    stack.push(operand1 * operand2);
+                    break;
+                case '/':
+                    stack.push(operand1 / operand2);
+                    break;
+                default:
+                    throw new Error(`Unsupported operator: ${token}`);
+            }
+        }
+    });
+
+    if (stack.items.length !== 1) {
+        throw new Error("Invalid expression");
+    }
+
+    return stack.pop();
+}
